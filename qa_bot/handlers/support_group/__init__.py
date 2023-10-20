@@ -1,16 +1,18 @@
 from aiogram import Router
-from aiogram.filters import CommandStart, StateFilter
 
-from qa_bot import states
-from qa_bot.filters import ChatTypeFilter, TextFilter
+from qa_bot.filters import ChatTypeFilter, IsSupportChat
 
-from . import echo
+from . import echo, question
 
 
 def prepare_router() -> Router:
     group_router = Router()
     group_router.message.filter(ChatTypeFilter("supergroup"))
 
+    group_router.message.register(
+        question.new_mgs_in_group,
+        IsSupportChat(),
+    )
     group_router.message.register(
         echo.echo
     )

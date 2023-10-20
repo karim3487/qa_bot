@@ -9,9 +9,7 @@ import tenacity
 from aiogram import Bot, Dispatcher
 from aiogram.client.session.aiohttp import AiohttpSession
 from aiogram.client.telegram import TelegramAPIServer
-from aiogram.fsm.storage.redis import DefaultKeyBuilder, RedisStorage
 from aiohttp import web
-from redis.asyncio import Redis
 
 from qa_bot import handlers, utils, web_handlers
 from qa_bot.data import config
@@ -88,7 +86,8 @@ async def close_db_connections(dp: Dispatcher) -> None:
 
 def setup_handlers(dp: Dispatcher) -> None:
     dp.include_router(handlers.user.prepare_router())
-    dp.include_router(handlers.group.prepare_router())
+    dp.include_router(handlers.admin_group.prepare_router())
+    dp.include_router(handlers.support_group.prepare_router())
 
 
 def setup_middlewares(dp: Dispatcher) -> None:

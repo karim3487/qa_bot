@@ -4,7 +4,7 @@ from aiogram.filters import CommandStart, StateFilter
 from qa_bot import states
 from qa_bot.filters import ChatTypeFilter, TextFilter
 
-from . import start, echo
+from . import echo, start
 
 
 def prepare_router() -> Router:
