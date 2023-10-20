@@ -2,7 +2,7 @@ from aiogram import Router
 
 from qa_bot.filters import ChatTypeFilter, IsSupportChat
 
-from . import echo, question
+from . import question
 
 
 def prepare_router() -> Router:
@@ -12,9 +12,6 @@ def prepare_router() -> Router:
     group_router.message.register(
         question.new_mgs_in_group,
         IsSupportChat(),
-    )
-    group_router.message.register(
-        echo.echo
     )
 
     return group_router
