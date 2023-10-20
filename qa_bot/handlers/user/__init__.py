@@ -4,7 +4,7 @@ from aiogram.filters import CommandStart, StateFilter
 from qa_bot import states
 from qa_bot.filters import ChatTypeFilter, TextFilter
 
-from . import start
+from . import start, echo
 
 
 def prepare_router() -> Router:
@@ -17,5 +17,6 @@ def prepare_router() -> Router:
         TextFilter("🏠В главное меню"),
         StateFilter(states.user.UserMainMenu.menu),
     )
+    user_router.message.register(echo.echo)
 
     return user_router
