@@ -8,6 +8,8 @@ env = Env()
 env.read_env()
 
 BOT_TOKEN: str = env.str("BOT_TOKEN")
+ADMIN_CHAT_ID: str = env.str("ADMIN_CHAT_ID", "-1002120352862")
+SUPPORT_CHAT_ID: str = env.str("SUPPORT_CHAT_ID", "-1002050509330")
 
 LOGGING_LEVEL: int = env.int("LOGGING_LEVEL", 10)
 
