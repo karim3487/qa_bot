@@ -13,9 +13,9 @@ from aiogram.fsm.storage.redis import DefaultKeyBuilder, RedisStorage
 from aiohttp import web
 from redis.asyncio import Redis
 
-from aiogram_bot_template import handlers, utils, web_handlers
-from aiogram_bot_template.data import config
-from aiogram_bot_template.middlewares import StructLoggingMiddleware
+from qa_bot import handlers, utils, web_handlers
+from qa_bot.data import config
+from qa_bot.middlewares import StructLoggingMiddleware
 
 
 async def create_db_connections(dp: Dispatcher) -> None:
@@ -105,7 +105,7 @@ async def setup_aiogram(dp: Dispatcher) -> None:
     setup_logging(dp)
     logger = dp["aiogram_logger"]
     logger.debug("Configuring aiogram")
-    await create_db_connections(dp)
+    # await create_db_connections(dp)
     setup_handlers(dp)
     setup_middlewares(dp)
     logger.info("Configured aiogram")
@@ -213,17 +213,7 @@ def main() -> None:
         )
     bot = Bot(config.BOT_TOKEN, parse_mode="HTML", session=session)
 
-    dp = Dispatcher(
-        storage=RedisStorage(
-            redis=Redis(
-                host=config.FSM_HOST,
-                password=config.FSM_PASSWORD,
-                port=config.FSM_PORT,
-                db=0,
-            ),
-            key_builder=DefaultKeyBuilder(with_bot_id=True),
-        )
-    )
+    dp = Dispatcher()
     dp["aiogram_session_logger"] = aiogram_session_logger
 
     if config.USE_WEBHOOK:
