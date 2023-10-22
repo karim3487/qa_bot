@@ -1,17 +1,26 @@
-from aiogram import Router
+from aiogram import F, Router
 
 from qa_bot.filters import ChatTypeFilter, IsSupportChat
 
+from ...keyboards.inline.callbacks import ReactionCallback
 from . import question
 
 
 def prepare_router() -> Router:
-    group_router = Router()
-    group_router.message.filter(ChatTypeFilter("supergroup"))
-
-    group_router.message.register(
-        question.new_mgs_in_group,
+    support_group_router = Router()
+    support_group_router.message.filter(
+        ChatTypeFilter("supergroup"),
         IsSupportChat(),
+        F.text,
     )
 
-    return group_router
+    support_group_router.callback_query.register(
+        question.reaction_on_answer_callback,
+        ReactionCallback.filter(),
+    )
+
+    support_group_router.message.register(
+        question.new_msg_in_group,
+    )
+
+    return support_group_router
