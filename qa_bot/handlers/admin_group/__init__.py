@@ -1,10 +1,11 @@
 from aiogram import F, Router
+from aiogram.filters import Command
 
 from qa_bot.filters import ChatTypeFilter, IsAdminChat
 
 from ...keyboards.inline.callbacks import AnswerCallback
 from ...states.admin_chat import AdminChatAnswerStates
-from . import answer, callbacks
+from . import answer, callbacks, add_answer
 
 
 def prepare_router() -> Router:
@@ -12,7 +13,12 @@ def prepare_router() -> Router:
     admin_group_router.message.filter(
         ChatTypeFilter("supergroup"),
         IsAdminChat(),
-        F.text,
+        # F.text,
+    )
+
+    admin_group_router.message.register(
+        add_answer.add_new_answer,
+        Command("add_answer"),
     )
 
     admin_group_router.callback_query.register(
