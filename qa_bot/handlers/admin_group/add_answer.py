@@ -1,4 +1,4 @@
-from aiogram import Bot, types
+from aiogram import types
 
 from qa_bot.web_handlers import api
 

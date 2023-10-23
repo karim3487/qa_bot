@@ -1,4 +1,3 @@
-import requests
 
 
 # def send_message_to_api_sync(message_text):
