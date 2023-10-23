@@ -26,7 +26,7 @@ async def write_answer_callback(callback_query: types.CallbackQuery, callback_da
 
     m = [
         f'@{callback_query.from_user.username}, напишите ответ на вопрос и отправьте сообщение:',
-        question_text
+        f'<code>{question_text}</code>'
     ]
 
     await bot.edit_message_text('\n'.join(m), chat_id=admin_chat_id, message_id=msg_to_edit)
