@@ -1,4 +1,4 @@
-from aiogram import types, Bot
+from aiogram import Bot, types
 from aiogram.fsm.context import FSMContext
 
 from qa_bot.keyboards.inline.callbacks import AnswerCallback
@@ -10,7 +10,6 @@ async def write_answer_callback(callback_query: types.CallbackQuery, callback_da
     admin_chat_id = callback_query.message.chat.id
     msg_to_edit = callback_query.message.message_id
     support_chat_id = callback_data.support_chat_id
-    msg_id_to_edit = callback_data.msg_id_to_edit
     question_msg_id = callback_data.question_msg_id
     question_text = callback_data.question_text
     asker_id = callback_data.asker_id
@@ -32,9 +31,4 @@ async def write_answer_callback(callback_query: types.CallbackQuery, callback_da
     await bot.edit_message_text('\n'.join(m), chat_id=admin_chat_id, message_id=msg_to_edit)
 
     await state.set_state(AdminChatAnswerStates.write_answer)
-    m = [
-        'Администратор начал отвечать на Ваш вопрос, подождите...'
-    ]
-
-    await bot.edit_message_text('\n'.join(m), chat_id=support_chat_id, message_id=msg_id_to_edit)
     await callback_query.answer()
