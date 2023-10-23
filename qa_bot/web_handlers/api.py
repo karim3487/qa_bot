@@ -1,15 +1,24 @@
+import requests
 
 
-# async def send_message_to_api(message_text):
+# def send_message_to_api_sync(message_text):
 #     url = ""
 #     data = {'message': message_text}
-#     async with aiohttp.ClientSession() as session:
-#         async with session.post(url, data=data) as response:
-#             result = response.json()
-#             return result
+#
+#     response = requests.post(url, data=data)
+#     result = response.json()
+#     return result
+
+# def add_answer(answer):
+#     url = ""
+#     data = {'answer': answer}
+#
+#     response = requests.post(url, data=data)
+#     result = response.json()
+#     return result
 
 
-async def send_message_to_api(message_text: str) -> int:
+def send_message_to_api(message_text: str) -> int:
     """
     Sends the provided message to an API.
 
@@ -33,3 +42,7 @@ async def send_message_to_api(message_text: str) -> int:
             return 2
         case "c":
             return 3
+
+
+def add_answer(answer):
+    return {'status_code': 200}
