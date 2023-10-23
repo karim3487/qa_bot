@@ -4,7 +4,7 @@ from qa_bot.filters import ChatTypeFilter, IsAdminChat
 
 from ...keyboards.inline.callbacks import AnswerCallback
 from ...states.admin_chat import AdminChatAnswerStates
-from . import answer
+from . import answer, callbacks
 
 
 def prepare_router() -> Router:
@@ -16,7 +16,7 @@ def prepare_router() -> Router:
     )
 
     admin_group_router.callback_query.register(
-        answer.write_answer_callback,
+        callbacks.write_answer_callback,
         AnswerCallback.filter(),
 
     )

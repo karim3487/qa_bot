@@ -1,3 +1,5 @@
+from typing import Optional
+
 from aiogram.filters.callback_data import CallbackData
 
 class AnswerCallback(CallbackData, prefix="answer"):
@@ -18,8 +20,10 @@ class ReactionCallback(CallbackData, prefix="reaction"):
     # Chat ID with administrators
     admin_chat_id: int
     # Message ID with the administrator's response
-    answer_msg_id: int
+    answer_msg_id: Optional[int] = None
     # Text of the message with the administrator's response
     answer_msg_text: str
     # ID of the person who asked the question
     asker_id: int
+    # Text of the question
+    question_text: Optional[str]

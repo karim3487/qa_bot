@@ -3,7 +3,7 @@ from aiogram import F, Router
 from qa_bot.filters import ChatTypeFilter, IsSupportChat
 
 from ...keyboards.inline.callbacks import ReactionCallback
-from . import question
+from . import question, callbacks
 
 
 def prepare_router() -> Router:
@@ -11,11 +11,11 @@ def prepare_router() -> Router:
     support_group_router.message.filter(
         ChatTypeFilter("supergroup"),
         IsSupportChat(),
-        F.text,
+        # F.text,
     )
 
     support_group_router.callback_query.register(
-        question.reaction_on_answer_callback,
+        callbacks.reaction_on_answer_callback,
         ReactionCallback.filter(),
     )
 
