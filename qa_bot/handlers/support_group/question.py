@@ -1,4 +1,5 @@
 from aiogram import html, types
+from aiogram.fsm.context import FSMContext
 
 from qa_bot.data import config
 from qa_bot.keyboards.inline import answer
@@ -20,9 +21,7 @@ async def new_msg_in_group(msg: types.Message) -> None:
     if result == 1:
         answer_text = "Ответ"
         rkb = make_reaction_keyboard(admin_chat_id=int(admin_chat_id),
-                                     answer_msg_text=answer_text,
                                      asker_id=msg.from_user.id,
-                                     q_text=question_text,
                                      q_msg_id=question_msg_id)
 
         response_message = [
@@ -39,12 +38,11 @@ async def new_msg_in_group(msg: types.Message) -> None:
     elif result == 2:
         user_question_message = [
             f'Пользователь {username_url} задал вопрос, ответ на который не нашелся в системе:',
-            f'<code>{question_text}</code>',
+            f'<code>{html.quote(question_text)}</code>',
         ]
 
         await msg.reply('Подождите немного, админ ответит на этот вопрос через некоторое время.')
-        rkb = answer.make_answer_keyboard(q=question_text,
-                                          q_msg_id=msg.message_id,
+        rkb = answer.make_answer_keyboard(q_msg_id=msg.message_id,
                                           support_chat_id=support_chat_id,
                                           asker_id=msg.from_user.id)
         await msg.bot.send_message(chat_id=admin_chat_id, text="\n".join(user_question_message), reply_markup=rkb)

@@ -1,4 +1,4 @@
-from aiogram import Bot, types
+from aiogram import Bot, html, types
 from aiogram.fsm.context import FSMContext
 
 from qa_bot.keyboards.inline.reactions import make_reaction_keyboard
@@ -22,12 +22,11 @@ async def answer_the_question(msg: types.Message, state: FSMContext, bot: Bot) -
 
     rkb = make_reaction_keyboard(admin_chat_id=admin_chat_id,
                                  answer_msg_id=answer_msg_id,
-                                 answer_msg_text=answer_msg_text,
                                  asker_id=data['asker_id'])
 
     response_message = [
         'Ответ от администратора:',
-        msg.text,
+        f'<code>{html.quote(answer_msg_text)}</code>',
         '\nПомог ли вам ответ?',
         '👍 – Да',
         '👎 – Нет',

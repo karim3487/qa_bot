@@ -4,13 +4,12 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from .callbacks import AnswerCallback
 
 
-def make_answer_keyboard(q: str, q_msg_id: int, support_chat_id: int, asker_id: int) -> types.InlineKeyboardMarkup:
+def make_answer_keyboard(q_msg_id: int, support_chat_id: int, asker_id: int) -> types.InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     actions = [
         {
             'text': 'Ответить ✅',
-            'callback_data': AnswerCallback(question_text=q,
-                                            question_msg_id=q_msg_id,
+            'callback_data': AnswerCallback(question_msg_id=q_msg_id,
                                             support_chat_id=support_chat_id,
                                             asker_id=asker_id),
         },
