@@ -1,37 +1,46 @@
 from aiogram import Bot, html, types
-from aiogram.fsm.context import FSMContext
+from aiogram.filters import CommandObject
 
+from qa_bot.data import config
 from qa_bot.keyboards.inline.reactions import make_reaction_keyboard
 
 
-async def answer_the_question(msg: types.Message, state: FSMContext, bot: Bot) -> None:
+async def answer_the_question(msg: types.Message, command: CommandObject, bot: Bot) -> None:
     if msg.from_user is None:
         return
 
-    data = await state.get_data()
-    admin_chat_id = msg.chat.id
-    answer_msg_id = msg.message_id
-    answer_msg_text = msg.text
-    support_chat_id = data.get('support_chat_id')
-    q_msg_id = data.get('q_msg_id')
+    if not command.args:
+        await msg.reply("Вы ввели что-то не то, попробуйте еще раз")
 
-    if support_chat_id is None or q_msg_id is None:
-        await msg.reply('Error: Missing data in the state.\n Обратитесь с этой ошибкой к пользователю @user123')
-        await state.clear()
+    args = command.args.split(' ', 2)
+
+    if len(args) >= 3:
+        support_chat_id = args.pop(0)
+        question_msg_id = int(args.pop(0))
+        answer = ' '.join(args)
+
+        m = [
+            'Ответ от администратора:',
+            f'<code>{html.quote(answer)}</code>',
+            '\nПомог ли вам ответ?',
+            '👍 – Да',
+            '👎 – Нет',
+        ]
+        rkb = make_reaction_keyboard(admin_chat_id=config.ADMIN_CHAT_ID,
+                                     answer_msg_id=msg.message_id)
+
+        await bot.send_message(chat_id=support_chat_id, text='\n'.join(m), reply_to_message_id=question_msg_id,
+                               reply_markup=rkb)
+
+        m = [
+            '✅ Вы успешно ответили на вопрос!',
+        ]
+        await msg.reply('\n'.join(m))
         return
-
-    rkb = make_reaction_keyboard(admin_chat_id=admin_chat_id,
-                                 answer_msg_id=answer_msg_id,
-                                 asker_id=data['asker_id'])
-
-    response_message = [
-        'Ответ от администратора:',
-        f'<code>{html.quote(answer_msg_text)}</code>',
-        '\nПомог ли вам ответ?',
-        '👍 – Да',
-        '👎 – Нет',
-    ]
-
-    await bot.send_message(chat_id=support_chat_id, text='\n'.join(response_message), reply_to_message_id=q_msg_id,
-                           reply_markup=rkb)
-    await state.clear()
+    else:
+        m = [
+            'Укажите аргументы команды',
+            f'Пример: {html.code("/ответ 516712732 12 Ваш_ответ")}',
+        ]
+        await msg.reply('\n'.join(m))
+        return

@@ -4,8 +4,6 @@ from aiogram.filters.callback_data import CallbackData
 
 
 class AnswerCallback(CallbackData, prefix="answer"):
-    # Text of the question
-    # question_text: str
     # Message ID of the question
     question_msg_id: int
     # Chat ID with support where the question originated
@@ -18,10 +16,8 @@ class ReactionCallback(CallbackData, prefix="reaction"):
     # Whether the answer was helpful
     is_help: bool
     # Chat ID with administrators
-    admin_chat_id: int
+    admin_chat_id: str
     # Message ID with the administrator's response
     answer_msg_id: Optional[int] = None
-    # ID of the person who asked the question
-    asker_id: int
     # Message ID of the question
     question_msg_id: Optional[int] = None
