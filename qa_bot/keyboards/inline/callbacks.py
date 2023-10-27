@@ -3,13 +3,15 @@ from typing import Optional
 from aiogram.filters.callback_data import CallbackData
 
 
-class AnswerCallback(CallbackData, prefix="answer"):
-    # Message ID of the question
-    question_msg_id: int
-    # Chat ID with support where the question originated
+class StartAnsweringCallback(CallbackData, prefix="start_a"):
     support_chat_id: int
-    # ID of the person who asked the question
-    asker_id: int
+    q_msg_id: int
+
+
+class CancelAnsweringCallback(CallbackData, prefix="cancel_a"):
+    answering_id: int
+    support_chat_id: int
+    q_msg_id: int
 
 
 class ReactionCallback(CallbackData, prefix="reaction"):

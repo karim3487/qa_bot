@@ -1,6 +1,7 @@
 from aiogram import Bot, html, types
 from aiogram.fsm.context import FSMContext
 
+from qa_bot.keyboards.inline.answer import make_start_answer_keyboard
 from qa_bot.keyboards.inline.callbacks import ReactionCallback
 from qa_bot.states.support_chat import SupportChatQuestionStates
 
@@ -34,10 +35,9 @@ async def reaction_on_answer_callback(callback_query: types.CallbackQuery, callb
             '\nОтвет системы:',
             f'<code>{html.quote(answer_text)}</code>',
             '\nПользователю не помог ответ от системы'
-            '\nЧтобы ответить на вопрос введите:',
-            f'<code>/ответить {support_chat_id} {question_msg_id} Ваш_ответ</code>',
         ]
-        await bot.send_message(chat_id=callback_data.admin_chat_id, text='\n'.join(admin_notification))
+        rkb = make_start_answer_keyboard(support_chat_id=support_chat_id, q_msg_id=question_msg_id)
+        await bot.send_message(chat_id=callback_data.admin_chat_id, text='\n'.join(admin_notification), reply_markup=rkb)
         await callback_query.answer()
     # Reaction on message with answer from admin
     else:

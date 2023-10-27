@@ -4,7 +4,11 @@ from aiogram.filters import Command, ExceptionTypeFilter
 
 from qa_bot.filters import ChatTypeFilter, IsAdminChat
 
-from . import add_answer, answer, errors
+from ...keyboards.inline.callbacks import (
+    CancelAnsweringCallback,
+    StartAnsweringCallback,
+)
+from . import add_answer, answer, callbacks, errors
 
 
 def prepare_router() -> Router:
@@ -23,6 +27,16 @@ def prepare_router() -> Router:
     admin_group_router.message.register(
         answer.answer_the_question,
         Command("ответить"),
+    )
+
+    admin_group_router.callback_query.register(
+        callbacks.start_answering_callback,
+        StartAnsweringCallback.filter(),
+    )
+
+    admin_group_router.callback_query.register(
+        callbacks.cancel_answering_callback,
+        CancelAnsweringCallback.filter(),
     )
 
     admin_group_router.error.register(

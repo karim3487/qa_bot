@@ -9,6 +9,10 @@ async def answer_the_question(msg: types.Message, command: CommandObject, bot: B
     if msg.from_user is None:
         return
 
+    if not msg.reply_to_message:
+        await msg.reply("Вам нужно ответить на сообщение с вопросом")
+        return
+
     if not command.args:
         await msg.reply("Вы ввели что-то не то, попробуйте еще раз")
 
@@ -33,9 +37,12 @@ async def answer_the_question(msg: types.Message, command: CommandObject, bot: B
                                reply_markup=rkb)
 
         m = [
-            '✅ Вы успешно ответили на вопрос!',
+            msg.reply_to_message.html_text,
+            '✅ Ответ отправлен',
         ]
-        await msg.reply('\n'.join(m))
+
+        await bot.edit_message_text("\n".join(m), msg.chat.id, msg.reply_to_message.message_id)
+
         return
     else:
         m = [
