@@ -86,6 +86,7 @@ async def close_db_connections(dp: Dispatcher) -> None:
 
 def setup_handlers(dp: Dispatcher) -> None:
     dp.include_router(handlers.user.prepare_router())
+    dp.include_router(handlers.groups.prepare_router())
     dp.include_router(handlers.admin_group.prepare_router())
     dp.include_router(handlers.support_group.prepare_router())
 
