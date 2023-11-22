@@ -38,3 +38,8 @@ if USE_CUSTOM_API_SERVER:
     CUSTOM_API_SERVER_IS_LOCAL: bool = env.bool("CUSTOM_API_SERVER_IS_LOCAL")
     CUSTOM_API_SERVER_BASE: str = env.str("CUSTOM_API_SERVER_BASE")
     CUSTOM_API_SERVER_FILE: str = env.str("CUSTOM_API_SERVER_FILE")
+
+AUTORESPONDER_API_KEY: str = env.str("AUTORESPONDER_API_KEY", "Please, set API key")
+AUTORESPONDER_BASE_URL: str = env.str(
+    "AUTORESPONDER_BASE_URL", "Please, set base url for auto responder"
+)
