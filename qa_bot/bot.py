@@ -14,6 +14,7 @@ from aiohttp import web
 from qa_bot import handlers, utils, web_handlers
 from qa_bot.data import config
 from qa_bot.middlewares import StructLoggingMiddleware
+from qa_bot.utils.commands import set_default_commands
 
 
 async def create_db_connections(dp: Dispatcher) -> None:
@@ -216,6 +217,9 @@ def main() -> None:
 
     dp = Dispatcher()
     dp["aiogram_session_logger"] = aiogram_session_logger
+
+    dp.startup.register(set_default_commands)
+
 
     if config.USE_WEBHOOK:
         dp.startup.register(aiogram_on_startup_webhook)
