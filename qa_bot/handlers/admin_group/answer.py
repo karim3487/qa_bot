@@ -1,6 +1,7 @@
-from aiogram import Bot, html, types
+from aiogram import Bot, types
 from aiogram.filters import CommandObject
 
+from qa_bot.utils.messages import MESSAGES
 from qa_bot.data import config
 from qa_bot.keyboards.inline.reactions import make_reaction_keyboard
 
@@ -12,11 +13,11 @@ async def answer_the_question(
         return
 
     if not msg.reply_to_message:
-        await msg.reply("Вам нужно ответить на сообщение с вопросом")
+        await msg.reply(MESSAGES.Errors.AnswerToTheQuestion.did_not_reply_to_the_msg)
         return
 
     if not command.args:
-        await msg.reply("Вы ввели что-то не то, попробуйте еще раз")
+        await msg.reply(MESSAGES.Errors.AnswerToTheQuestion.no_args)
 
     args = command.args.split(" ", 2)
 
@@ -25,38 +26,26 @@ async def answer_the_question(
         question_msg_id = int(args.pop(0))
         answer = " ".join(args)
 
-        m = [
-            "Ответ от администратора:",
-            f"<code>{html.quote(answer)}</code>",
-            "\nПомог ли вам ответ?",
-            "👍 – Да",
-            "👎 – Нет",
-        ]
         rkb = make_reaction_keyboard(
             admin_chat_id=config.ADMIN_CHAT_ID, answer_msg_id=msg.message_id
         )
 
         await bot.send_message(
             chat_id=support_chat_id,
-            text="\n".join(m),
+            text=MESSAGES.Info.AnswerWithReactions.from_admin(answer),
             reply_to_message_id=question_msg_id,
             reply_markup=rkb,
         )
 
-        m = [
-            msg.reply_to_message.html_text,
-            "✅ Ответ отправлен",
-        ]
-
         await bot.edit_message_text(
-            "\n".join(m), msg.chat.id, msg.reply_to_message.message_id
+            MESSAGES.Info.add_sent_status(
+                msg.reply_to_message.html_text,
+            ),
+            msg.chat.id,
+            msg.reply_to_message.message_id,
         )
 
         return
     else:
-        m = [
-            "Укажите аргументы команды",
-            f'Пример: {html.code("/ответ 516712732 12 Ваш_ответ")}',
-        ]
-        await msg.reply("\n".join(m))
+        await msg.reply(MESSAGES.Errors.AnswerToTheQuestion.incorrect_args)
         return

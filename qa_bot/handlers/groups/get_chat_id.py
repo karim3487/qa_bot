@@ -1,8 +1,9 @@
-from aiogram import types, html
+from aiogram import types
+
+from qa_bot.utils.messages import MESSAGES
 
 
 async def get_chat_id(msg: types.Message):
     cid = str(msg.chat.id)
-    m = [f"ID чата: {html.bold(html.quote(cid))}"]
 
-    await msg.answer("\n".join(m))
+    await msg.answer(MESSAGES.Info.get_chat_id(cid))

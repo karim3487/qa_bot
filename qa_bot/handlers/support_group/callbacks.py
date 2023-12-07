@@ -1,6 +1,7 @@
-from aiogram import Bot, html, types
+from aiogram import Bot, types
 from aiogram.fsm.context import FSMContext
 
+from qa_bot.utils.messages import MESSAGES
 from qa_bot.keyboards.inline.answer import make_start_answer_keyboard
 from qa_bot.keyboards.inline.callbacks import ReactionCallback
 from qa_bot.states.support_chat import SupportChatQuestionStates
@@ -22,71 +23,44 @@ async def reaction_on_answer_callback(
     question_msg_id = answer_msg.reply_to_message.message_id
 
     if asker_id != user_id:
-        await callback_query.answer("Простите, это не Вы задавали этот вопрос")
+        await callback_query.answer(MESSAGES.Errors.question_from_another_user)
         return
     # Reaction on message with answer from API
     if not callback_data.answer_msg_id:
         if callback_data.is_help:
-            admin_response = [
-                "Ответ на Ваш вопрос:",
-                f"<code>{html.quote(answer_text)}</code>",
-                "\nСпасибо за отзыв, всегда рады помочь Вам",
-            ]
             await bot.edit_message_text(
-                "\n".join(admin_response),
+                MESSAGES.Info.ResponseFromApi.ok(answer_text),
                 chat_id=support_chat_id,
                 message_id=answer_msg_id,
             )
         else:
-            user_response = [
-                "Ответ на Ваш вопрос:",
-                f"<code>{html.quote(answer_text)}</code>",
-                "\nСпасибо за отзыв, администратор скоро ответит на Ваш вопрос",
-            ]
             await bot.edit_message_text(
-                "\n".join(user_response),
+                MESSAGES.Info.ResponseFromApi.nok(answer_text),
                 chat_id=support_chat_id,
                 message_id=answer_msg_id,
             )
 
-            admin_notification = [
-                "Вопрос:",
-                f"<code>{html.quote(question_text)}</code>",
-                "\nОтвет системы:",
-                f"<code>{html.quote(answer_text)}</code>",
-                "\nПользователю не помог ответ от системы",
-            ]
             rkb = make_start_answer_keyboard(
                 support_chat_id=support_chat_id, q_msg_id=question_msg_id
             )
             await bot.send_message(
                 chat_id=callback_data.admin_chat_id,
-                text="\n".join(admin_notification),
+                text=MESSAGES.Info.question_after_reaction(question_text, answer_text),
                 reply_markup=rkb,
             )
             await callback_query.answer()
     # Reaction on message with answer from admin
     else:
         if callback_data.is_help:
-            admin_response = [
-                "Ответ от администратора:",
-                f"<code>{html.quote(answer_text)}</code>",
-                "\nСпасибо за отзыв, всегда рады помочь Вам",
-            ]
             await bot.edit_message_text(
-                "\n".join(admin_response),
+                MESSAGES.Info.ResponseFromAdmin.ok(answer_text),
                 chat_id=support_chat_id,
                 message_id=answer_msg_id,
             )
         else:
-            admin_response = [
-                "Ответ от администратора:",
-                f"<code>{html.quote(answer_text)}</code>",
-                "\nНапишите оставшиеся вопросы:",
-            ]
             await state.set_state(SupportChatQuestionStates.write_question)
             await bot.edit_message_text(
-                "\n".join(admin_response),
+                MESSAGES.Info.ResponseFromAdmin.nok(answer_text),
                 chat_id=support_chat_id,
                 message_id=answer_msg_id,
             )
