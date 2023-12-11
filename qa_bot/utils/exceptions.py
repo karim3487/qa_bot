@@ -1,0 +1,2 @@
+class AnswerAlreadyExists(Exception):
+    pass

@@ -9,6 +9,10 @@ async def handle_not_found_cid_and_mid(event: ErrorEvent):
     await event.update.message.answer(MESSAGES.Errors.not_found_cid_or_mid)
 
 
+async def answer_already_exists(event: ErrorEvent):
+    await event.update.message.answer(MESSAGES.Errors.answer_already_exists)
+
+
 async def handle_other_errors(event: ErrorEvent, bot: Bot):
     msg = event.update.message
     cid = msg.chat.id

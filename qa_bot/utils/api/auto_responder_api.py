@@ -1,8 +1,9 @@
-from typing import Optional, Mapping, Tuple
+from typing import Optional, Tuple
 
 from qa_bot.data import config
 from qa_bot.utils.api.base import BaseClient
 from qa_bot.utils.enums import TypeOfMessages
+from qa_bot.utils.exceptions import AnswerAlreadyExists
 
 
 class AutoResponderAPI(BaseClient):
@@ -12,17 +13,19 @@ class AutoResponderAPI(BaseClient):
         )
 
     async def get_answer_to_question(
-        self, question: str
+            self, question: str
     ) -> Tuple[TypeOfMessages, Optional[str]]:
         url = f"/api/v1/answers/?cosine={question}"
 
         response = await self._make_authenticated_request(method="get", url=url)
+        detail = response[1].get('detail')
         if response[0] == 400:
-            detail = response[1]["detail"]
             if detail == "Is not a question":
+                self.log.debug(f"It is not a question: {question}")
                 return TypeOfMessages.IS_NO_Q, None
-            if detail == "No answer to the question":
-                return TypeOfMessages.IS_Q_WITHOUT_ANSWER, None
+        if response[0] == 200 and response[1].get('count') == 3:
+            self.log.debug(f"No answer to question: {question}")
+            return TypeOfMessages.IS_Q_WITHOUT_ANSWER, response[1]["results"]
         return TypeOfMessages.IS_Q_WITH_ANSWER, response[1]["results"][0]["text"]
 
     async def add_answer(self, answer) -> None:
@@ -32,6 +35,17 @@ class AutoResponderAPI(BaseClient):
         response = await self._make_authenticated_request(
             method="post", url=url, json=json
         )
+        if response[0] == 409:
+            self.log.debug(f"An answer with this text already exists: {answer}")
+            raise AnswerAlreadyExists
+
+    async def get_list_of_answers(self) -> list:
+        url = "/api/v1/answers/"
+
+        response = await self._make_authenticated_request(method="get", url=url)
+        answers = [answer['text'] for answer in response[1]['results']]
+        return answers
+
 
 
 auto_responder_api = AutoResponderAPI()

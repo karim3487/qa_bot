@@ -23,7 +23,7 @@ class BaseClient:
         self._base_url = base_url
         self._api_key = api_key
         self._session: ClientSession | None = None
-        self._accept_statuses = [200, 201, 400]
+        self._accept_statuses = [200, 201, 400, 409]
         self.log = utils.logging.setup_logger().bind(type="aiogram_session")
 
     async def _get_session(self) -> ClientSession:

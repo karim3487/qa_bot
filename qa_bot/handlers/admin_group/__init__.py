@@ -8,7 +8,8 @@ from ...keyboards.inline.callbacks import (
     CancelAnsweringCallback,
     StartAnsweringCallback,
 )
-from . import add_answer, answer, callbacks, errors
+from . import add_answer, answer, callbacks, errors, get_answers
+from ...utils.exceptions import AnswerAlreadyExists
 
 
 def prepare_router() -> Router:
@@ -17,6 +18,11 @@ def prepare_router() -> Router:
         ChatTypeFilter("supergroup"),
         IsAdminChat(),
         F.text,
+    )
+
+    admin_group_router.message.register(
+        get_answers.get_answers,
+        Command("get_answers"),
     )
 
     admin_group_router.message.register(
@@ -37,6 +43,11 @@ def prepare_router() -> Router:
     admin_group_router.callback_query.register(
         callbacks.cancel_answering_callback,
         CancelAnsweringCallback.filter(),
+    )
+
+    admin_group_router.error.register(
+        errors.answer_already_exists,
+        ExceptionTypeFilter(AnswerAlreadyExists),
     )
 
     admin_group_router.error.register(

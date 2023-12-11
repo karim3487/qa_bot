@@ -17,14 +17,14 @@ class MESSAGES:
 
         class AnswerWithReactions:
             @staticmethod
-            def _format_response_with_reactions(answer: str, feedback: str) -> str:
-                return "\n".join([answer, html.code(html.quote(answer)), feedback])
+            def _format_response_with_reactions(prefix: str, answer: str, feedback: str) -> str:
+                return "\n".join([prefix, html.code(html.quote(answer)), feedback])
 
             @staticmethod
             def from_admin(answer: str) -> str:
                 return (
                     MESSAGES.Info.AnswerWithReactions._format_response_with_reactions(
-                        answer, MESSAGES.Reactions.to_answer
+                        MESSAGES.Info.answer_from_admin, answer, MESSAGES.Reactions.to_answer
                     )
                 )
 
@@ -32,7 +32,7 @@ class MESSAGES:
             def from_api(answer: str) -> str:
                 return (
                     MESSAGES.Info.AnswerWithReactions._format_response_with_reactions(
-                        answer, MESSAGES.Reactions.to_answer
+                        MESSAGES.Info.answer_from_api, answer, MESSAGES.Reactions.to_answer
                     )
                 )
 
@@ -126,10 +126,10 @@ class MESSAGES:
 
         @staticmethod
         def add_instruction_to_question(
-            question: str,
-            support_cid: str | int,
-            question_mid: str | int,
-            username: str,
+                question: str,
+                support_cid: str | int,
+                question_mid: str | int,
+                username: str,
         ) -> str:
             return "\n".join(
                 [
@@ -167,6 +167,7 @@ class MESSAGES:
             "Не получается найти чат с таким ID или сообщение!\n" "Попробуйте еще раз"
         )
         question_from_another_user = "Простите, это не Вы задавали этот вопрос"
+        answer_already_exists = "Такой ответ уже есть в БД"
         other = (f"Упс! {html.bold('Ошибка!')} Не переживайте, "
                  f"ошибка уже {html.bold('отправлена')} разработчику.")
 
