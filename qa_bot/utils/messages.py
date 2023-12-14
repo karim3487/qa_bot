@@ -17,14 +17,18 @@ class MESSAGES:
 
         class AnswerWithReactions:
             @staticmethod
-            def _format_response_with_reactions(prefix: str, answer: str, feedback: str) -> str:
+            def _format_response_with_reactions(
+                prefix: str, answer: str, feedback: str
+            ) -> str:
                 return "\n".join([prefix, html.code(html.quote(answer)), feedback])
 
             @staticmethod
             def from_admin(answer: str) -> str:
                 return (
                     MESSAGES.Info.AnswerWithReactions._format_response_with_reactions(
-                        MESSAGES.Info.answer_from_admin, answer, MESSAGES.Reactions.to_answer
+                        MESSAGES.Info.answer_from_admin,
+                        answer,
+                        MESSAGES.Reactions.to_answer,
                     )
                 )
 
@@ -32,7 +36,9 @@ class MESSAGES:
             def from_api(answer: str) -> str:
                 return (
                     MESSAGES.Info.AnswerWithReactions._format_response_with_reactions(
-                        MESSAGES.Info.answer_from_api, answer, MESSAGES.Reactions.to_answer
+                        MESSAGES.Info.answer_from_api,
+                        answer,
+                        MESSAGES.Reactions.to_answer,
                     )
                 )
 
@@ -95,11 +101,20 @@ class MESSAGES:
             )
 
         @staticmethod
-        def question_without_answer(username_url: str, question: str) -> str:
+        def question_without_answer(
+            username_url: str, question: str, answers: list[str, ...]
+        ) -> str:
             return "\n".join(
                 [
                     f"Пользователь {username_url} задал вопрос, ответ на который не нашелся в системе:",
                     html.code(html.quote(question)),
+                    f"\nПредложения системы:",
+                    f"\n".join(
+                        [
+                            f"{i + 1}. {html.code(html.quote(answer))}"
+                            for i, answer in enumerate(answers)
+                        ]
+                    ),
                 ]
             )
 
@@ -126,10 +141,10 @@ class MESSAGES:
 
         @staticmethod
         def add_instruction_to_question(
-                question: str,
-                support_cid: str | int,
-                question_mid: str | int,
-                username: str,
+            question: str,
+            support_cid: str | int,
+            question_mid: str | int,
+            username: str,
         ) -> str:
             return "\n".join(
                 [
@@ -168,8 +183,10 @@ class MESSAGES:
         )
         question_from_another_user = "Простите, это не Вы задавали этот вопрос"
         answer_already_exists = "Такой ответ уже есть в БД"
-        other = (f"Упс! {html.bold('Ошибка!')} Не переживайте, "
-                 f"ошибка уже {html.bold('отправлена')} разработчику.")
+        other = (
+            f"Упс! {html.bold('Ошибка!')} Не переживайте, "
+            f"ошибка уже {html.bold('отправлена')} разработчику."
+        )
 
         class AnswerToTheQuestion:
             did_not_reply_to_the_msg = "Вам нужно ответить на сообщение с вопросом"
