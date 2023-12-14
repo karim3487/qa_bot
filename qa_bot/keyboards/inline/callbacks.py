@@ -23,3 +23,8 @@ class ReactionCallback(CallbackData, prefix="reaction"):
     answer_msg_id: Optional[int] = None
     # Message ID of the question
     question_msg_id: Optional[int] = None
+
+
+class PagesCallback(CallbackData, prefix="pages"):
+    page: Optional[int] = 1
+    stop: Optional[bool] = False

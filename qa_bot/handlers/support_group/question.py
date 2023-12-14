@@ -1,6 +1,7 @@
 from aiogram import html, types
 from aiogram.fsm.context import FSMContext
 
+from qa_bot.states.support_chat import Test
 from qa_bot.utils.messages import MESSAGES
 from qa_bot.data import config
 from qa_bot.keyboards.inline.answer import make_start_answer_keyboard
@@ -9,7 +10,7 @@ from qa_bot.utils.api.auto_responder_api import auto_responder_api
 from qa_bot.utils.enums import TypeOfMessages
 
 
-async def new_msg_in_group(msg: types.Message) -> None:
+async def new_msg_in_group(msg: types.Message, state: FSMContext) -> None:
     if msg.from_user is None:
         return
 
@@ -36,9 +37,10 @@ async def new_msg_in_group(msg: types.Message) -> None:
             support_chat_id=msg.chat.id, q_msg_id=msg.message_id
         )
         await msg.reply(MESSAGES.Info.waiting)
+        answers = [item["text"] for item in result]
         await msg.bot.send_message(
             chat_id=admin_chat_id,
-            text=MESSAGES.Info.question_without_answer(username_url, msg.text),
+            text=MESSAGES.Info.question_without_answer(username_url, msg.text, answers),
             reply_markup=rkb,
         )
 

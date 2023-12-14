@@ -7,6 +7,7 @@ from qa_bot.filters import ChatTypeFilter, IsAdminChat
 from ...keyboards.inline.callbacks import (
     CancelAnsweringCallback,
     StartAnsweringCallback,
+    PagesCallback,
 )
 from . import add_answer, answer, callbacks, errors, get_answers
 from ...utils.exceptions import AnswerAlreadyExists
@@ -43,6 +44,11 @@ def prepare_router() -> Router:
     admin_group_router.callback_query.register(
         callbacks.cancel_answering_callback,
         CancelAnsweringCallback.filter(),
+    )
+
+    admin_group_router.callback_query.register(
+        get_answers.pagination,
+        PagesCallback.filter(),
     )
 
     admin_group_router.error.register(
