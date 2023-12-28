@@ -57,7 +57,7 @@ def prepare_router() -> Router:
     )
 
     admin_group_router.error.register(
-        errors.handle_not_found_cid_and_mid,
+        errors.handle_other_errors,
         ExceptionTypeFilter(TelegramBadRequest),
     )
 

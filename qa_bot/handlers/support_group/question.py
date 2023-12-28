@@ -1,7 +1,6 @@
 from aiogram import html, types
 from aiogram.fsm.context import FSMContext
 
-from qa_bot.states.support_chat import Test
 from qa_bot.utils.messages import MESSAGES
 from qa_bot.data import config
 from qa_bot.keyboards.inline.answer import make_start_answer_keyboard

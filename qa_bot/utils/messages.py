@@ -111,7 +111,7 @@ class MESSAGES:
                     f"\nПредложения системы:",
                     f"\n".join(
                         [
-                            f"{i + 1}. {html.code(html.quote(answer))}"
+                            f"\n#️⃣{i + 1}. {html.code(html.quote(answer))}"
                             for i, answer in enumerate(answers)
                         ]
                     ),
@@ -187,6 +187,7 @@ class MESSAGES:
             f"Упс! {html.bold('Ошибка!')} Не переживайте, "
             f"ошибка уже {html.bold('отправлена')} разработчику."
         )
+        cannot_change_page = "Вы не можете переключиться на эту страницу"
 
         class AnswerToTheQuestion:
             did_not_reply_to_the_msg = "Вам нужно ответить на сообщение с вопросом"
