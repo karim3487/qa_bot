@@ -1,6 +1,7 @@
 from aiogram import html, types
 from aiogram.fsm.context import FSMContext
 
+from qa_bot.utils.api.answer import Answer
 from qa_bot.utils.messages import MESSAGES
 from qa_bot.data import config
 from qa_bot.keyboards.inline.answer import make_start_answer_keyboard
@@ -32,14 +33,18 @@ async def new_msg_in_group(msg: types.Message, state: FSMContext) -> None:
         )
 
     elif message_type == TypeOfMessages.IS_Q_WITHOUT_ANSWER:
+        answers = [Answer.from_dict(item) for item in result]
         rkb = make_start_answer_keyboard(
-            support_chat_id=msg.chat.id, q_msg_id=msg.message_id
+            support_chat_id=msg.chat.id,
+            q_msg_id=msg.message_id,
+            answers_id=[a.answer_id for a in answers],
         )
         await msg.reply(MESSAGES.Info.waiting)
-        answers = [item["text"] for item in result]
         await msg.bot.send_message(
             chat_id=admin_chat_id,
-            text=MESSAGES.Info.question_without_answer(username_url, msg.text, answers),
+            text=MESSAGES.Info.question_without_answer(
+                username_url, msg.text, [a.text for a in answers]
+            ),
             reply_markup=rkb,
         )
 

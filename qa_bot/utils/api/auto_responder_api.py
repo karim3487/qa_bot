@@ -1,4 +1,4 @@
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Dict
 
 from qa_bot.data import config
 from qa_bot.utils.api.base import BaseClient
@@ -40,10 +40,15 @@ class AutoResponderAPI(BaseClient):
             self.log.debug(f"An answer with this text already exists: {answer}")
             raise AnswerAlreadyExists
 
-    async def get_answers(self, offset=0) -> dict:
+    async def get_answers(self, offset=0) -> Dict:
         limit = self.answers_per_page
         url = f"/api/v1/answers/?limit={limit}&offset={offset}"
 
+        response = await self._make_authenticated_request(method="get", url=url)
+        return response[1]
+
+    async def get_answer(self, answer_id: int) -> Dict:
+        url = f"/api/v1/answers/{answer_id}"
         response = await self._make_authenticated_request(method="get", url=url)
         return response[1]
 

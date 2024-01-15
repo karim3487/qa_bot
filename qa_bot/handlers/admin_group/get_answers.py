@@ -23,8 +23,7 @@ def calculate_offset(page: int, answers_per_page: int) -> int:
 
 
 async def create_pagination_message(
-        page: int, answers: list[Answer],
-        total_answers: int
+    page: int, answers: list[Answer], total_answers: int
 ) -> tuple[str, types.InlineKeyboardMarkup]:
     answers_per_page = auto_responder_api.answers_per_page
     offset = (page - 1) * len(answers)
@@ -38,21 +37,23 @@ async def create_pagination_message(
         f"{html.bold(f'Ответы {offset + 1}-{offset + len(answers)} из {total_answers}')}\n",
         *answers,
     ]
-    keyboard = make_pages_keyboard(
-        current_page=page, total_pages=total_pages
-    )
+    keyboard = make_pages_keyboard(current_page=page, total_pages=total_pages)
     return "\n".join(message_content), keyboard
 
 
 async def get_answers(msg: types.Message) -> None:
     data = await auto_responder_api.get_answers()
-    answer_list = [Answer.from_dict(answer) for answer in data['results']]
-    total_answers = data['count']
-    message_content, keyboard = await create_pagination_message(1, answer_list, total_answers)
+    answer_list = [Answer.from_dict(answer) for answer in data["results"]]
+    total_answers = data["count"]
+    message_content, keyboard = await create_pagination_message(
+        1, answer_list, total_answers
+    )
     await msg.answer(message_content, reply_markup=keyboard)
 
 
-async def pagination(callback_query: types.CallbackQuery, callback_data: PagesCallback) -> None:
+async def pagination(
+    callback_query: types.CallbackQuery, callback_data: PagesCallback
+) -> None:
     if callback_data.stop:
         await callback_query.answer(MESSAGES.Errors.cannot_change_page)
         return
@@ -61,8 +62,10 @@ async def pagination(callback_query: types.CallbackQuery, callback_data: PagesCa
     answers_per_page = auto_responder_api.answers_per_page
     offset = calculate_offset(page, answers_per_page)
     data = await auto_responder_api.get_answers(offset)
-    answer_list = [Answer.from_dict(answer) for answer in data['results']]
-    total_answers = data['count']
-    message_content, keyboard = await create_pagination_message(page, answer_list, total_answers)
+    answer_list = [Answer.from_dict(answer) for answer in data["results"]]
+    total_answers = data["count"]
+    message_content, keyboard = await create_pagination_message(
+        page, answer_list, total_answers
+    )
 
     await callback_query.message.edit_text(message_content, reply_markup=keyboard)

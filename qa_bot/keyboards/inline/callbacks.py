@@ -6,6 +6,7 @@ from aiogram.filters.callback_data import CallbackData
 class StartAnsweringCallback(CallbackData, prefix="start_a"):
     support_chat_id: int
     q_msg_id: int
+    answers_id: Optional[str] = None
 
 
 class CancelAnsweringCallback(CallbackData, prefix="cancel_a"):
@@ -28,3 +29,7 @@ class ReactionCallback(CallbackData, prefix="reaction"):
 class PagesCallback(CallbackData, prefix="pages"):
     page: Optional[int] = 1
     stop: Optional[bool] = False
+
+
+class AnswerCallback(CallbackData, prefix="answer"):
+    answer_id: int

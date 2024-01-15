@@ -111,7 +111,7 @@ class MESSAGES:
                     f"\nПредложения системы:",
                     f"\n".join(
                         [
-                            f"\n#️⃣{i + 1}. {html.code(html.quote(answer))}"
+                            f"\n#️⃣ {i + 1}. {html.code(html.quote(answer))}"
                             for i, answer in enumerate(answers)
                         ]
                     ),
