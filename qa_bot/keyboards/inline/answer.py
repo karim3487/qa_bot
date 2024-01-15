@@ -29,14 +29,15 @@ def make_start_answer_keyboard(
 
 
 def make_cancel_answer_keyboard(
-    answers_id: List[int], answering_id: int, support_chat_id: int, q_msg_id: int
+    answering_id: int, support_chat_id: int, q_msg_id: int, answers_id: Optional[List[int]] = None
 ) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
 
-    for i, answer_id in enumerate(answers_id):
-        builder.button(
-            text=f"#️⃣ {i + 1}", callback_data=AnswerCallback(answer_id=answer_id)
-        )
+    if answers_id:
+        for i, answer_id in enumerate(answers_id):
+            builder.button(
+                text=f"#️⃣ {i + 1}", callback_data=AnswerCallback(answer_id=answer_id)
+            )
 
     builder.button(
         text="Перестать отвечать",
