@@ -16,7 +16,7 @@ from ...utils.exceptions import AnswerAlreadyExists
 def prepare_router() -> Router:
     admin_group_router = Router()
     admin_group_router.message.filter(
-        ChatTypeFilter("supergroup"),
+        ChatTypeFilter(["group", "supergroup"]),
         IsAdminChat(),
         F.text,
     )

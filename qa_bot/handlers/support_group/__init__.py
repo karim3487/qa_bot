@@ -11,7 +11,7 @@ from . import callbacks, question
 def prepare_router() -> Router:
     support_group_router = Router()
     support_group_router.message.filter(
-        ChatTypeFilter("supergroup"),
+        ChatTypeFilter(["group", "supergroup"]),
         IsSupportChat(),
         F.text,
     )

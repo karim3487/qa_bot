@@ -9,7 +9,7 @@ from . import get_chat_id
 def prepare_router() -> Router:
     group_router = Router()
     group_router.message.filter(
-        ChatTypeFilter("supergroup"),
+        ChatTypeFilter(["group", "supergroup"]),
         F.text,
     )
 
