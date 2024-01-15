@@ -45,15 +45,15 @@ ignore-init-module-imports = true
 
 
 [tool.poetry]
-name = "aiogram-bot-template"
-version = "2.2.0"
-description = "Template for creating scalable bots with aiogram"
-authors = ["Forden <24463229+Forden@users.noreply.github.com>"]
+name = "qa-bot"
+version = "1.0.0"
+description = "base"
+authors = ["karim3487"]
 readme = "README.md"
-packages = [{ include = "aiogram_bot_template" }]
+packages = [{ include = "qa_bot" }]
 
 [tool.poetry.scripts]
-aiogram_bot_template = "aiogram_bot_template.bot:main"
+qa_bot = "qa_bot.bot:main"
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -67,6 +67,7 @@ orjson = "3.9.7"
 structlog = "^23.1.0"
 tenacity = "8.2.3"
 pytz = "^2023.3.post1"
+ujson = "^5.9.0"
 
 [tool.poetry.group.dev]
 optional = true
