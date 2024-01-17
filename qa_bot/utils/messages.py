@@ -142,7 +142,6 @@ class MESSAGES:
         @staticmethod
         def add_instruction_to_question(
             question: str,
-            support_cid: str | int,
             question_mid: str | int,
             username: str,
         ) -> str:
@@ -150,7 +149,7 @@ class MESSAGES:
                 [
                     question,
                     "\nЧтобы ответить на вопрос введите:",
-                    html.code(f"/ответить {support_cid} {question_mid} Ваш_ответ"),
+                    html.code(f"/ответить {question_mid} Ваш_ответ"),
                     f"\nЗа ответ взялся {username}",
                 ]
             )

@@ -47,7 +47,6 @@ async def start_answering_callback(
 
     m = MESSAGES.Info.add_instruction_to_question(
         callback_query.message.html_text,
-        callback_data.support_chat_id,
         callback_data.q_msg_id,
         username,
     )
@@ -55,7 +54,6 @@ async def start_answering_callback(
     rkb = make_cancel_answer_keyboard(
         answers_id=answers_id,
         answering_id=callback_query.from_user.id,
-        support_chat_id=callback_data.support_chat_id,
         q_msg_id=callback_data.q_msg_id,
     )
 
@@ -81,7 +79,6 @@ async def cancel_answering_callback(
     data = await state.get_data()
 
     rkb = make_start_answer_keyboard(
-        support_chat_id=callback_data.support_chat_id,
         q_msg_id=callback_data.q_msg_id,
         answers_id=data["answers_id"],
     )

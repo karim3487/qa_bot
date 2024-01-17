@@ -21,7 +21,7 @@ async def answer_the_question(
 
     args = command.args.split(" ", 2)
 
-    if len(args) >= 3:
+    if len(args) >= 2:
         support_chat_id = config.SUPPORT_CHAT_ID
         question_msg_id = int(args.pop(0))
         answer = " ".join(args)

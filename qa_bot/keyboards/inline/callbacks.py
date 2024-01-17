@@ -4,14 +4,12 @@ from aiogram.filters.callback_data import CallbackData
 
 
 class StartAnsweringCallback(CallbackData, prefix="start_a"):
-    support_chat_id: int
     q_msg_id: int
     answers_id: Optional[str] = None
 
 
 class CancelAnsweringCallback(CallbackData, prefix="cancel_a"):
     answering_id: int
-    support_chat_id: int
     q_msg_id: int
 
 

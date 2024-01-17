@@ -35,7 +35,6 @@ async def new_msg_in_group(msg: types.Message, state: FSMContext) -> None:
     elif message_type == TypeOfMessages.IS_Q_WITHOUT_ANSWER:
         answers = [Answer.from_dict(item) for item in result]
         rkb = make_start_answer_keyboard(
-            support_chat_id=msg.chat.id,
             q_msg_id=msg.message_id,
             answers_id=[a.answer_id for a in answers],
         )
