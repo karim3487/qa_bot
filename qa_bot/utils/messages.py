@@ -10,6 +10,17 @@ class MESSAGES:
             "Подождите немного, админ ответит на этот вопрос через некоторое время."
         )
 
+        @staticmethod
+        def cleared_message(asker_username_url: str, answering_username_url: str, question: str, answer_text: str):
+            return "\n".join(
+                [
+                    f"Пользователь {asker_username_url} задал вопрос:",
+                    html.code(html.quote(question)),
+                    f"\n✅ На него ответил администратор {answering_username_url}:",
+                    f"{html.quote(answer_text)}",
+                ]
+            )
+
         class ThanksForFeedback:
             ok = "\nСпасибо за отзыв, всегда рады помочь Вам"
             nok = "\nСпасибо за отзыв, администратор скоро ответит на Ваш вопрос"
@@ -17,7 +28,7 @@ class MESSAGES:
         class AnswerWithReactions:
             @staticmethod
             def _format_response_with_reactions(
-                prefix: str, answer: str, feedback: str
+                    prefix: str, answer: str, feedback: str
             ) -> str:
                 return "\n".join([prefix, html.italic(html.quote(answer)), feedback])
 
@@ -101,7 +112,7 @@ class MESSAGES:
 
         @staticmethod
         def question_without_answer(
-            username_url: str, question: str, answers: list[str, ...]
+                username_url: str, question: str, answers: list[str, ...]
         ) -> str:
             return "\n".join(
                 [
@@ -140,9 +151,9 @@ class MESSAGES:
 
         @staticmethod
         def add_instruction_to_question(
-            question: str,
-            question_mid: str | int,
-            username: str,
+                question: str,
+                question_mid: str | int,
+                username: str,
         ) -> str:
             return "\n".join(
                 [
