@@ -5,7 +5,6 @@ class MESSAGES:
     class Info:
         answer_from_admin = "Ответ от администратора:"
         answer_from_api = "Ответ на Ваш вопрос:"
-        answer_sent = "✅ Ответ отправлен"
         another_questions = "\nНапишите оставшиеся вопросы:"
         waiting = (
             "Подождите немного, админ ответит на этот вопрос через некоторое время."
@@ -20,7 +19,7 @@ class MESSAGES:
             def _format_response_with_reactions(
                 prefix: str, answer: str, feedback: str
             ) -> str:
-                return "\n".join([prefix, html.code(html.quote(answer)), feedback])
+                return "\n".join([prefix, html.italic(html.quote(answer)), feedback])
 
             @staticmethod
             def from_admin(answer: str) -> str:
@@ -48,7 +47,7 @@ class MESSAGES:
                 return "\n".join(
                     [
                         MESSAGES.Info.answer_from_api,
-                        html.code(html.quote(answer)),
+                        html.italic(html.quote(answer)),
                         feedback,
                     ]
                 )
@@ -71,7 +70,7 @@ class MESSAGES:
                 return "\n".join(
                     [
                         MESSAGES.Info.answer_from_admin,
-                        html.code(html.quote(answer)),
+                        html.italic(html.quote(answer)),
                         feedback,
                     ]
                 )
@@ -95,7 +94,7 @@ class MESSAGES:
                     "Вопрос",
                     html.code(html.quote(question)),
                     "Ответ от системы",
-                    html.code(html.quote(answer)),
+                    html.italic(html.quote(answer)),
                     "\nПользователю не помог ответ от системы",
                 ]
             )
@@ -106,12 +105,12 @@ class MESSAGES:
         ) -> str:
             return "\n".join(
                 [
-                    f"Пользователь {username_url} задал вопрос, ответ на который не нашелся в системе:",
+                    f"Пользователь {username_url} задал вопрос:",
                     html.code(html.quote(question)),
-                    f"\nПредложения системы:",
+                    f"\n{html.bold('Предложения системы:')}",
                     f"\n".join(
                         [
-                            f"\n#️⃣ {i + 1}. {html.code(html.quote(answer))}"
+                            f"\n#️⃣ {html.bold(i + 1)}. {html.quote(answer)}"
                             for i, answer in enumerate(answers)
                         ]
                     ),
@@ -155,15 +154,11 @@ class MESSAGES:
             )
 
         @staticmethod
-        def add_sent_status(message: str) -> str:
-            return "\n".join([message, MESSAGES.Info.answer_sent])
-
-        @staticmethod
         def add_answer(answer: str) -> str:
             return "\n".join(
                 [
                     "✅ Ответ добавлен в БД:",
-                    html.code(html.quote(answer)),
+                    html.italic(html.quote(answer)),
                 ]
             )
 
@@ -178,7 +173,7 @@ class MESSAGES:
         )
         cancel_answering = "На этот вопрос отвечает другой администратор."
         not_found_cid_or_mid = (
-            "Не получается найти чат с таким ID или сообщение!\n" "Попробуйте еще раз"
+            "Не получается найти сообщение с таким ID!\nПопробуйте еще раз"
         )
         question_from_another_user = "Простите, это не Вы задавали этот вопрос"
         answer_already_exists = "Такой ответ уже есть в БД"
@@ -193,7 +188,7 @@ class MESSAGES:
             no_args = "Вы ввели что-то не то, попробуйте еще раз"
             incorrect_args = (
                 "Укажите аргументы команды\n"
-                f"Пример: {html.code('/ответ 516712732 12 Ваш_ответ')}"
+                f"Пример: {html.code('/ответ 12 Ваш_ответ')}"
             )
 
         @staticmethod

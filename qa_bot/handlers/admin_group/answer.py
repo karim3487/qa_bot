@@ -4,6 +4,7 @@ from aiogram.filters import CommandObject
 from qa_bot.utils.messages import MESSAGES
 from qa_bot.data import config
 from qa_bot.keyboards.inline.reactions import make_reaction_keyboard
+from qa_bot.utils.my_services import clean_msg
 
 
 async def answer_the_question(
@@ -37,13 +38,7 @@ async def answer_the_question(
             reply_markup=rkb,
         )
 
-        await bot.edit_message_text(
-            MESSAGES.Info.add_sent_status(
-                msg.reply_to_message.html_text,
-            ),
-            msg.chat.id,
-            msg.reply_to_message.message_id,
-        )
+        await clean_msg(msg.reply_to_message, msg.from_user, answer)
 
         return
     else:

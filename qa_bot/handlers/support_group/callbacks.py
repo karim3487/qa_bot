@@ -7,6 +7,24 @@ from qa_bot.keyboards.inline.callbacks import ReactionCallback
 from qa_bot.states.support_chat import SupportChatQuestionStates
 
 
+def extract_answer_text(answer_msg: types.Message) -> str:
+    entities = answer_msg.entities
+    # filtered_entities = [entity for entity in entities if entity.type != 'italic']
+    # for entity in entities:
+    #     for f_entity in filtered_entities:
+    #         if f_entity.offset == entity.offset and f_entity.type != entity.type:
+    #             entities.remove(entity)
+
+    filtered_entities = [entity for entity in entities if entity.type != "italic"]
+    unique_entities = {entity.offset: entity for entity in entities}
+    entities = list(unique_entities.values())
+
+    m = ""
+    for item in entities:
+        m += item.extract_from(answer_msg.text)
+    return m
+
+
 async def reaction_on_answer_callback(
     callback_query: types.CallbackQuery,
     callback_data: ReactionCallback,
@@ -18,7 +36,7 @@ async def reaction_on_answer_callback(
     support_chat_id = callback_query.message.chat.id
     answer_msg = callback_query.message
     answer_msg_id = answer_msg.message_id
-    answer_text = answer_msg.entities[-1].extract_from(callback_query.message.text)
+    answer_text = extract_answer_text(answer_msg)
     question_text = answer_msg.reply_to_message.text
     question_msg_id = answer_msg.reply_to_message.message_id
 
@@ -40,9 +58,7 @@ async def reaction_on_answer_callback(
                 message_id=answer_msg_id,
             )
 
-            rkb = make_start_answer_keyboard(
-                support_chat_id=support_chat_id, q_msg_id=question_msg_id
-            )
+            rkb = make_start_answer_keyboard(q_msg_id=question_msg_id)
             await bot.send_message(
                 chat_id=callback_data.admin_chat_id,
                 text=MESSAGES.Info.question_after_reaction(question_text, answer_text),

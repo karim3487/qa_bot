@@ -1,4 +1,4 @@
-from aiogram import Bot, types
+from aiogram import Bot, types, html
 from aiogram.fsm.context import FSMContext
 
 from qa_bot.data import config
@@ -15,12 +15,7 @@ from qa_bot.keyboards.inline.callbacks import (
     StartAnsweringCallback,
     AnswerCallback,
 )
-
-
-async def show_kb_with_answers(msg: types.Message) -> None:
-    entities = msg.entities[2:]
-    for item in entities:
-        item.extract_from(msg.text)
+from qa_bot.utils.my_services import clean_msg
 
 
 async def start_answering_callback(
@@ -30,7 +25,6 @@ async def start_answering_callback(
     state: FSMContext,
 ) -> None:
     answers_id = eval(callback_data.answers_id)
-    await show_kb_with_answers(callback_query.message)
 
     await state.update_data(
         msg_html=callback_query.message.html_text,
@@ -119,11 +113,6 @@ async def answer_button_callback(
         reply_markup=rkb,
     )
 
-    await bot.edit_message_text(
-        MESSAGES.Info.add_sent_status(
-            msg.html_text,
-        ),
-        msg.chat.id,
-        msg.message_id,
-    )
+    await clean_msg(callback_query.message, callback_query.from_user, answer.text)
+
     await callback_query.answer()
