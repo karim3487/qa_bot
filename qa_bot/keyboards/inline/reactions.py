@@ -9,6 +9,7 @@ from .callbacks import ReactionCallback
 def make_reaction_keyboard(
     admin_chat_id: str,
     answer_msg_id: Optional[int] = None,
+    language: Optional[str] = None,
     q_msg_id: Optional[int] = None,
 ) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
@@ -17,6 +18,7 @@ def make_reaction_keyboard(
             "text": "👍",
             "callback_data": ReactionCallback(
                 is_help=True,
+                language=language,
                 admin_chat_id=admin_chat_id,
                 answer_msg_id=answer_msg_id,
                 question_msg_id=q_msg_id,
@@ -26,6 +28,7 @@ def make_reaction_keyboard(
             "text": "👎",
             "callback_data": ReactionCallback(
                 is_help=False,
+                language=language,
                 admin_chat_id=admin_chat_id,
                 answer_msg_id=answer_msg_id,
                 question_msg_id=q_msg_id,

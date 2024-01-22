@@ -29,7 +29,9 @@ async def answer_the_question(
         answer_language = detect_language(answer)
 
         rkb = make_reaction_keyboard(
-            admin_chat_id=config.ADMIN_CHAT_ID, answer_msg_id=msg.message_id
+            admin_chat_id=config.ADMIN_CHAT_ID,
+            answer_msg_id=msg.message_id,
+            language=answer_language,
         )
 
         if answer_language == "ky":

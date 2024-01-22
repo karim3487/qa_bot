@@ -6,6 +6,7 @@ from aiogram.filters.callback_data import CallbackData
 class StartAnsweringCallback(CallbackData, prefix="start_a"):
     q_msg_id: int
     answers_id: Optional[str] = None
+    language: str
 
 
 class CancelAnsweringCallback(CallbackData, prefix="cancel_a"):
@@ -18,6 +19,8 @@ class ReactionCallback(CallbackData, prefix="reaction"):
     is_help: bool
     # Chat ID with administrators
     admin_chat_id: str
+    # Dialog language
+    language: Optional[str] = None
     # Message ID with the administrator's response
     answer_msg_id: Optional[int] = None
     # Message ID of the question

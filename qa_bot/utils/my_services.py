@@ -15,7 +15,7 @@ def make_user_url(user: types.User) -> str:
 
 
 async def clean_msg(
-        msg: types.Message, answering: types.User, answer_text: str
+    msg: types.Message, answering: types.User, answer_text: str
 ) -> None:
     asker = msg.entities[0].user
     asker_username_url = make_user_url(asker)
@@ -24,4 +24,7 @@ async def clean_msg(
     question = msg.entities[1].extract_from(msg.text)
 
     await msg.edit_text(
-        MESSAGES_RU.Info.cleared_message(asker_username_url, answering_username_url, question, answer_text))
+        MESSAGES_RU.Info.cleared_message(
+            asker_username_url, answering_username_url, question, answer_text
+        )
+    )

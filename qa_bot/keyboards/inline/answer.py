@@ -7,13 +7,14 @@ from .callbacks import CancelAnsweringCallback, StartAnsweringCallback, AnswerCa
 
 
 def make_start_answer_keyboard(
-    q_msg_id: int, answers_id: Optional[List[int]] = None
+    q_msg_id: int, language: str, answers_id: Optional[List[int]] = None
 ) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     actions = [
         {
             "text": "Взяться за ответ",
             "callback_data": StartAnsweringCallback(
+                language=language,
                 q_msg_id=q_msg_id,
                 answers_id=str(answers_id),
             ),

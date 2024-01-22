@@ -10,6 +10,7 @@ from qa_bot.utils.api.auto_responder_api import auto_responder_api
 from qa_bot.utils.enums import TypeOfMessages
 from qa_bot.utils.my_services import detect_language
 
+
 def get_waiting_msg(language: str) -> str:
     if language == "ky":
         return MESSAGES_KY.Info.waiting
@@ -26,6 +27,7 @@ async def new_msg_in_group(msg: types.Message, state: FSMContext) -> None:
     question_msg_id = msg.message_id
     admin_chat_id = config.ADMIN_CHAT_ID
     username_url = f'<a href="tg://user?id={msg.from_user.id}">{html.quote(msg.from_user.full_name)}</a>'
+    await state.update_data(language=question_language)
 
     message_type, result = await auto_responder_api.get_answer_to_question(
         question_text
@@ -33,7 +35,9 @@ async def new_msg_in_group(msg: types.Message, state: FSMContext) -> None:
     if message_type == TypeOfMessages.IS_Q_WITH_ANSWER:
         answer_text = result
         rkb = make_reaction_keyboard(
-            admin_chat_id=admin_chat_id, q_msg_id=question_msg_id
+            admin_chat_id=admin_chat_id,
+            q_msg_id=question_msg_id,
+            language=question_language,
         )
         if question_language == "ky":
             m = MESSAGES_KY.Info.AnswerWithReactions.from_api(answer_text)
@@ -46,6 +50,7 @@ async def new_msg_in_group(msg: types.Message, state: FSMContext) -> None:
         answers = [Answer.from_dict(item) for item in result]
         rkb = make_start_answer_keyboard(
             q_msg_id=msg.message_id,
+            language=question_language,
             answers_id=[a.answer_id for a in answers],
         )
 
@@ -64,8 +69,11 @@ async def new_msg_in_group(msg: types.Message, state: FSMContext) -> None:
 async def last_question(msg: types.Message, state: FSMContext):
     admin_chat_id = config.ADMIN_CHAT_ID
     username_url = f'<a href="tg://user?id={msg.from_user.id}">{html.quote(msg.from_user.full_name)}</a>'
-    rkb = make_start_answer_keyboard(q_msg_id=msg.message_id)
-    question_language = detect_language(msg.text)
+    data = await state.get_data()
+    question_language = data["language"]
+    rkb = make_start_answer_keyboard(
+        q_msg_id=msg.message_id, language=question_language
+    )
 
     m = get_waiting_msg(question_language)
     await msg.reply(m)

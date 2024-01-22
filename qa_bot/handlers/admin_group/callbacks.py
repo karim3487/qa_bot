@@ -15,7 +15,7 @@ from qa_bot.keyboards.inline.callbacks import (
     StartAnsweringCallback,
     AnswerCallback,
 )
-from qa_bot.utils.my_services import clean_msg, detect_language
+from qa_bot.utils.my_services import clean_msg
 
 
 async def start_answering_callback(
@@ -26,10 +26,12 @@ async def start_answering_callback(
 ) -> None:
     answers_id = eval(callback_data.answers_id)
 
+    q_language = callback_data.language
+
     await state.update_data(
         msg_html=callback_query.message.html_text,
         q_msg_id=callback_data.q_msg_id,
-        answers_id=answers_id,
+        language=q_language,
     )
 
     username = callback_query.from_user.username
@@ -74,6 +76,7 @@ async def cancel_answering_callback(
 
     rkb = make_start_answer_keyboard(
         q_msg_id=callback_data.q_msg_id,
+        language=data["language"],
         answers_id=data["answers_id"],
     )
 
@@ -101,13 +104,15 @@ async def answer_button_callback(
     support_chat_id = config.SUPPORT_CHAT_ID
     question_msg_id = q_msg_id
     answer = Answer.from_dict(await api.get_answer(callback_data.answer_id))
-    answer_language = detect_language(answer.text)
+    language = data["language"]
 
     rkb = make_reaction_keyboard(
-        admin_chat_id=config.ADMIN_CHAT_ID, answer_msg_id=msg.message_id
+        admin_chat_id=config.ADMIN_CHAT_ID,
+        answer_msg_id=msg.message_id,
+        language=language,
     )
 
-    if answer_language == "ky":
+    if language == "ky":
         m = MESSAGES_KY.Info.AnswerWithReactions.from_admin(answer.text)
     else:
         m = MESSAGES_RU.Info.AnswerWithReactions.from_admin(answer.text)
