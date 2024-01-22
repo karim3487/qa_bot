@@ -5,7 +5,7 @@ from qa_bot.data import config
 from qa_bot.utils.api.answer import Answer
 from qa_bot.utils.api.auto_responder_api import auto_responder_api as api
 from qa_bot.keyboards.inline.reactions import make_reaction_keyboard
-from qa_bot.utils.messages import MESSAGES
+from qa_bot.utils.messages import MESSAGES_RU, MESSAGES_KY
 from qa_bot.keyboards.inline.answer import (
     make_cancel_answer_keyboard,
     make_start_answer_keyboard,
@@ -15,7 +15,7 @@ from qa_bot.keyboards.inline.callbacks import (
     StartAnsweringCallback,
     AnswerCallback,
 )
-from qa_bot.utils.my_services import clean_msg
+from qa_bot.utils.my_services import clean_msg, detect_language
 
 
 async def start_answering_callback(
@@ -39,7 +39,7 @@ async def start_answering_callback(
     else:
         username = callback_query.from_user.full_name
 
-    m = MESSAGES.Info.add_instruction_to_question(
+    m = MESSAGES_RU.Info.add_instruction_to_question(
         callback_query.message.html_text,
         callback_data.q_msg_id,
         username,
@@ -68,7 +68,7 @@ async def cancel_answering_callback(
     state: FSMContext,
 ) -> None:
     if callback_query.from_user.id != callback_data.answering_id:
-        await callback_query.answer(MESSAGES.Errors.cancel_answering)
+        await callback_query.answer(MESSAGES_RU.Errors.cancel_answering)
         return
     data = await state.get_data()
 
@@ -101,14 +101,20 @@ async def answer_button_callback(
     support_chat_id = config.SUPPORT_CHAT_ID
     question_msg_id = q_msg_id
     answer = Answer.from_dict(await api.get_answer(callback_data.answer_id))
+    answer_language = detect_language(answer.text)
 
     rkb = make_reaction_keyboard(
         admin_chat_id=config.ADMIN_CHAT_ID, answer_msg_id=msg.message_id
     )
 
+    if answer_language == "ky":
+        m = MESSAGES_KY.Info.AnswerWithReactions.from_admin(answer.text)
+    else:
+        m = MESSAGES_RU.Info.AnswerWithReactions.from_admin(answer.text)
+
     await bot.send_message(
         chat_id=support_chat_id,
-        text=MESSAGES.Info.AnswerWithReactions.from_admin(answer.text),
+        text=m,
         reply_to_message_id=question_msg_id,
         reply_markup=rkb,
     )

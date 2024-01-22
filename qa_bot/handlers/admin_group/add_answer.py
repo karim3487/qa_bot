@@ -3,12 +3,12 @@ import re
 from aiogram import types
 
 from qa_bot.utils.api.auto_responder_api import auto_responder_api
-from qa_bot.utils.messages import MESSAGES
+from qa_bot.utils.messages import MESSAGES_RU
 
 
 async def add_new_answer(msg: types.Message):
     if not msg.reply_to_message:
-        await msg.answer(MESSAGES.Errors.add_answer)
+        await msg.answer(MESSAGES_RU.Errors.add_answer)
         return
 
     regex_pattern = r"/ответить -\d+ \d+ .+"
@@ -19,4 +19,4 @@ async def add_new_answer(msg: types.Message):
 
     await auto_responder_api.add_answer(answer)
 
-    await msg.reply(MESSAGES.Info.add_answer(answer))
+    await msg.reply(MESSAGES_RU.Info.add_answer(answer))

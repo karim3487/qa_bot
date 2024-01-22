@@ -1,6 +1,13 @@
 from aiogram import types, html
+from google.cloud import translate_v2 as translate
 
-from qa_bot.utils.messages import MESSAGES
+from qa_bot.utils.messages import MESSAGES_RU
+
+
+def detect_language(text: str) -> str:
+    """Return language short name"""
+    translate_client = translate.Client()
+    return translate_client.detect_language(text)["language"]
 
 
 def make_user_url(user: types.User) -> str:
@@ -17,4 +24,4 @@ async def clean_msg(
     question = msg.entities[1].extract_from(msg.text)
 
     await msg.edit_text(
-        MESSAGES.Info.cleared_message(asker_username_url, answering_username_url, question, answer_text))
+        MESSAGES_RU.Info.cleared_message(asker_username_url, answering_username_url, question, answer_text))

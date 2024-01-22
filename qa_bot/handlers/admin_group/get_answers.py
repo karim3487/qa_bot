@@ -4,7 +4,7 @@ from qa_bot.keyboards.inline.callbacks import PagesCallback
 from qa_bot.keyboards.inline.pages import make_pages_keyboard
 from qa_bot.utils.api.answer import Answer
 from qa_bot.utils.api.auto_responder_api import auto_responder_api
-from qa_bot.utils.messages import MESSAGES
+from qa_bot.utils.messages import MESSAGES_RU
 
 
 def calculate_total_pages(total_answers: int, answers_per_page: int) -> int:
@@ -55,7 +55,7 @@ async def pagination(
     callback_query: types.CallbackQuery, callback_data: PagesCallback
 ) -> None:
     if callback_data.stop:
-        await callback_query.answer(MESSAGES.Errors.cannot_change_page)
+        await callback_query.answer(MESSAGES_RU.Errors.cannot_change_page)
         return
     page = callback_data.page
 
