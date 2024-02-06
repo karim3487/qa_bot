@@ -32,6 +32,7 @@ async def start_answering_callback(
         msg_html=callback_query.message.html_text,
         q_msg_id=callback_data.q_msg_id,
         language=q_language,
+        answers_id=answers_id,
     )
 
     username = callback_query.from_user.username
