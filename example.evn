@@ -5,7 +5,7 @@ AUTORESPONDER_API_KEY=C89ask12j8sdajlkejr8asdlkjlk
 AUTORESPONDER_BASE_URL=https://auto-responder.com
 
 # Linux, macOS:
-GOOGLE_APPLICATION_CREDENTIALS=$HOME/.config/gcloud/application_default_credentials.json
+GOOGLE_APPLICATION_CREDENTIALS=${HOME}/.config/gcloud/application_default_credentials.json
 # Windows: %APPDATA%\gcloud\application_default_credentials.json
 # For more info: https://cloud.google.com/docs/authentication/application-default-credentials#personal
 
