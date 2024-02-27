@@ -1,4 +1,4 @@
-from aiogram import types, html
+from aiogram import html, types
 from google.cloud import translate_v2 as translate
 
 from qa_bot.utils.messages import MESSAGES_RU

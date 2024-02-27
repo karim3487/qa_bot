@@ -1,8 +1,8 @@
 from aiogram import Bot
 from aiogram.types import ErrorEvent
 
-from qa_bot.utils.messages import MESSAGES_RU
 from qa_bot.data import config
+from qa_bot.utils.messages import MESSAGES_RU
 
 
 async def it_is_not_question(event: ErrorEvent):

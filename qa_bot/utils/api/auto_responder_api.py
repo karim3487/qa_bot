@@ -1,4 +1,4 @@
-from typing import Optional, Tuple, Dict
+from typing import Dict, Optional, Tuple
 
 from qa_bot.data import config
 from qa_bot.utils.api.base import BaseClient

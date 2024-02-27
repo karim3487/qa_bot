@@ -1,4 +1,4 @@
-from aiogram import types, Bot
+from aiogram import Bot, types
 from aiogram.exceptions import TelegramBadRequest
 
 from qa_bot.data import config

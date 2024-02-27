@@ -1,8 +1,8 @@
 from aiogram import Bot
 from aiogram.types import ErrorEvent
 
-from qa_bot.utils.messages import MESSAGES_RU
 from qa_bot.data import config
+from qa_bot.utils.messages import MESSAGES_RU
 
 
 async def handle_not_found_cid_and_mid(event: ErrorEvent):

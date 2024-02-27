@@ -1,10 +1,10 @@
 from aiogram import Bot, types
 from aiogram.fsm.context import FSMContext
 
-from qa_bot.utils.messages import MESSAGES_RU, MESSAGES_KY
 from qa_bot.keyboards.inline.answer import make_start_answer_keyboard
 from qa_bot.keyboards.inline.callbacks import ReactionCallback
 from qa_bot.states.support_chat import SupportChatQuestionStates
+from qa_bot.utils.messages import MESSAGES_KY, MESSAGES_RU
 
 
 def extract_answer_text(answer_msg: types.Message) -> str:

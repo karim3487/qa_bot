@@ -1,4 +1,4 @@
-from aiogram import types, html
+from aiogram import html, types
 
 from qa_bot.keyboards.inline.callbacks import PagesCallback
 from qa_bot.keyboards.inline.pages import make_pages_keyboard

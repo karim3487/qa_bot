@@ -1,9 +1,9 @@
-from typing import Optional, List
+from typing import List, Optional
 
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from .callbacks import CancelAnsweringCallback, StartAnsweringCallback, AnswerCallback
+from .callbacks import AnswerCallback, CancelAnsweringCallback, StartAnsweringCallback
 
 
 def make_start_answer_keyboard(

@@ -119,7 +119,7 @@ class MESSAGES_RU:
                     f"Пользователь {username_url} задал вопрос:",
                     html.code(html.quote(question)),
                     f"\n{html.bold('Предложения системы:')}",
-                    f"\n".join(
+                    "\n".join(
                         [
                             f"\n#️⃣ {html.bold(i + 1)}. {html.quote(answer)}"
                             for i, answer in enumerate(answers)
@@ -332,8 +332,8 @@ class MESSAGES_KY(MESSAGES_RU):
                 [
                     f"Колдонуучунун {username_url} суроосуна:",
                     html.code(html.quote(question)),
-                    f"\nСистеманын сунушу:",
-                    f"\n".join(
+                    "\nСистеманын сунушу:",
+                    "\n".join(
                         [
                             f"\n#️⃣ {html.bold(i + 1)}. {html.quote(answer)}"
                             for i, answer in enumerate(answers)

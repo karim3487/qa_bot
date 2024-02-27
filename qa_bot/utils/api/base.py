@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import asyncio
 import ssl
-from typing import TYPE_CHECKING, Any
+from typing import Any, TYPE_CHECKING
 
-from aiohttp import ClientError, ClientSession, TCPConnector, FormData
+from aiohttp import ClientError, ClientSession, FormData, TCPConnector
 from ujson import dumps, loads
 
 from qa_bot import utils

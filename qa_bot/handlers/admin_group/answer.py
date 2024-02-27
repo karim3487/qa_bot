@@ -1,9 +1,9 @@
 from aiogram import Bot, types
 from aiogram.filters import CommandObject
 
-from qa_bot.utils.messages import MESSAGES_RU, MESSAGES_KY
 from qa_bot.data import config
 from qa_bot.keyboards.inline.reactions import make_reaction_keyboard
+from qa_bot.utils.messages import MESSAGES_KY, MESSAGES_RU
 from qa_bot.utils.my_services import clean_msg, detect_language
 
 

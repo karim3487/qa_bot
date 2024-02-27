@@ -5,13 +5,13 @@ from aiogram.filters import Command, ExceptionTypeFilter
 from qa_bot.filters import ChatTypeFilter, IsAdminChat
 
 from ...keyboards.inline.callbacks import (
-    CancelAnsweringCallback,
-    StartAnsweringCallback,
     AnswerCallback,
+    CancelAnsweringCallback,
     PagesCallback,
+    StartAnsweringCallback,
 )
-from . import add_answer, answer, callbacks, errors, get_answers
 from ...utils.exceptions import AnswerAlreadyExists
+from . import add_answer, answer, callbacks, errors, get_answers
 
 
 def prepare_router() -> Router:

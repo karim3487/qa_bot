@@ -1,13 +1,13 @@
 from aiogram import html, types
 from aiogram.fsm.context import FSMContext
 
-from qa_bot.utils.api.answer import Answer
-from qa_bot.utils.messages import MESSAGES_RU, MESSAGES_KY
 from qa_bot.data import config
 from qa_bot.keyboards.inline.answer import make_start_answer_keyboard
 from qa_bot.keyboards.inline.reactions import make_reaction_keyboard
+from qa_bot.utils.api.answer import Answer
 from qa_bot.utils.api.auto_responder_api import auto_responder_api
 from qa_bot.utils.enums import TypeOfMessages
+from qa_bot.utils.messages import MESSAGES_KY, MESSAGES_RU
 from qa_bot.utils.my_services import detect_language
 
 
