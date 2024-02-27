@@ -342,3 +342,6 @@ class MESSAGES_KY(MESSAGES_RU):
                 ]
             )
 
+    class Reactions:
+        to_answer = "\nЖооп пайдалуу болдубу?\n" "👍 – Ооба\n" "👎 – Жок"
+
